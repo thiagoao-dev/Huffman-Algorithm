@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 __author__  = "Thiago Augustus de Oliveira"
 __license__ = "GPL"
 __version__ = "1.0.0"
+=======
+__author__  = "Thiago Augustus de Oliveira e Douglas Komar"
+__license__ = "GPL"
+__version__ = "4.3.4"
+>>>>>>> origin/master
 __email__   = "thiagoaugustusdeoliveira@gmail.com"
 __status__  = "Production"
 
@@ -8,6 +14,7 @@ import json
 
 
 class Huffman:
+<<<<<<< HEAD
     pass
 
 class TxtRead:
@@ -21,6 +28,10 @@ class TxtRead:
         txt = txt_file.read()
         txt = txt.replace("\n", " ")
         return txt
+=======
+
+    pass
+>>>>>>> origin/master
 
 class JsonRead:
     def __init__(self):
@@ -41,6 +52,7 @@ class JsonRead:
 
 class Counter:
 
+<<<<<<< HEAD
     letters = {}
     readed  = []
 
@@ -60,3 +72,7 @@ class Counter:
 
 
 print(Counter().counterLetter())
+=======
+    def __init__(self):
+        pass
+>>>>>>> origin/master
