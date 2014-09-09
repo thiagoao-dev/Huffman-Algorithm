@@ -8,23 +8,57 @@ import json
 
 
 class Huffman:
-    pass
+
+    def __init__(self):
+        NodeList()
+
+class NodeList:
+
+    nodeList = []
+
+    def __init__(self):
+
+        dict = TextCount().counterLetter
+        total = dict.pop('total')
+
+        for i in dict:
+            self.nodeList.append(
+                Node(
+                    i, round(
+                        (
+                            (dict[i]*100) / total
+                        )
+                    )
+                )
+            )
+        print(self.nodeList)
+
+class Node:
+
+    value = None
+    node_0 = None
+    node_1 = None
+    percent = None
+
+    def __init__(self, v, p):
+        self.value   = v
+        self.percent = p
 
 class TxtRead:
 
-    def __init__(self):
-        return None
-
     @property
     def readFile(self: object) -> object:
+        # Abre e Lê o arquivo texto.txt
         txt_file = open("texto.txt", "rt")
         txt = txt_file.read()
+
+        # Transforma todas as quebras de linhas em espaço simples
         txt = txt.replace("\n", " ")
+
+        #
         return txt
 
 class JsonRead:
-    def __init__(self):
-        pass
 
     # Read Json Method
     @staticmethod
@@ -39,24 +73,41 @@ class JsonRead:
             assert isinstance(json_file, object)
             return json_file
 
-class Counter:
+class TextCount:
 
     letters = {}
-    readed  = []
 
-    def __init__(self):
-        pass
+    @property
+    def counterLetter(self: object) -> object:
 
-    def counterLetter(self):
+        # Solicita o texto a ser lido
         text = TxtRead().readFile
+
+        readed = []
+        total  = 0
+
+        # Varre todo o texto, caracter por caracter
         for i in range(len(text)):
-            if text[i] not in self.readed:
-                self.readed.append(text[i])
+
+            #
+            total += 1
+
+            # Caso o caracter ainda não tenha sido lida
+            if text[i] not in readed:
+
+                # Add o caracter aos lidos e add ao dicionario
+                readed.append(text[i])
                 self.letters[text[i]] = 1
+            #
             else:
+
+                # Soma 1 ao caracter já adcionado
                 self.letters[text[i]] += 1
 
-        print(self.letters)
+        #
+        self.letters['total'] = total
 
+        # Retorna um dicionario com os caracteres nos indices e totais
+        return self.letters
 
-print(Counter().counterLetter())
+Huffman()
