@@ -1,3 +1,5 @@
+import copy
+
 __author__  = "Thiago Augustus de Oliveira"
 __license__ = "GPL"
 __version__ = "1.0.0"
@@ -9,8 +11,80 @@ import json
 
 class Huffman:
 
+    node_0 = None
+    nodeIndex_0 = -1
+    node_1 = None
+    nodeIndex_1 = -1
+    nodeTree = None
+
     def __init__(self):
-        NodeList()
+
+        self.node_0 = Node(float('inf'))
+        self.node_1 = Node(float('inf'))
+
+        nodeList = NodeList().getNodeList
+
+        while len(nodeList) > 1:
+            #
+            cp = copy.copy(nodeList)
+            while cp:
+                #
+                node = cp.pop()
+                #
+                if node.getPercent < self.node_0.percent:
+                    self.node_1 = self.node_0
+                    self.nodeIndex_1 = self.nodeIndex_0
+
+                    self.node_0 = node
+                    self.nodeIndex_0 = len(cp)
+                elif node.getPercent < self.node_1.percent:
+                    self.node_1 = node
+                    self.nodeIndex_1 = len(cp)
+            #
+
+            # O POP TÁ ERRADO
+            nodeList.pop(self.nodeIndex_0)
+            nodeList.pop(self.nodeIndex_1-1)
+
+            nodeList.append(
+                Node(
+                    self.node_0.getPercent +
+                    self.node_1.getPercent
+                ).setNode(
+                    self.node_0,self.node_1
+                )
+            )
+            #
+            self.node_0 = Node(float('inf'))
+            self.node_1 = Node(float('inf'))
+        print(nodeList[0].getPercent)
+
+class Node:
+
+    value = None
+    node_0 = None
+    node_1 = None
+    percent = None
+
+    def __init__(self, p):
+        self.percent = p
+
+    def setValue(self, v):
+        self.value = v
+        return self
+
+    def setNode(self, node_0, node_1):
+        if self.node_0 == None and self.node_1 == None:
+            self.node_0 = node_0
+            self.node_1 = node_1
+        return self
+
+    @property
+    def getPercent(self):
+        if self.node_0 == None:
+            return self.percent
+        else:
+            return (self.node_0.getPercent + self.node_1.getPercent)
 
 class NodeList:
 
@@ -21,28 +95,23 @@ class NodeList:
         dict = TextCount().counterLetter
         total = dict.pop('total')
 
+        #
         for i in dict:
             self.nodeList.append(
                 Node(
-                    i, round(
+                    round(
                         (
                             (dict[i]*100) / total
-                        )
+                        ),
+                        3 # Total de casas após a virgula
                     )
-                )
+                ).setValue(i)
             )
-        print(self.nodeList)
 
-class Node:
-
-    value = None
-    node_0 = None
-    node_1 = None
-    percent = None
-
-    def __init__(self, v, p):
-        self.value   = v
-        self.percent = p
+    @property
+    def getNodeList(self):
+        #
+        return self.nodeList
 
 class TxtRead:
 
