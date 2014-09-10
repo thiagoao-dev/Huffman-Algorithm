@@ -25,13 +25,14 @@ class Huffman:
 
         # Solicita o texto a ser lido
         text = TxtRead().readFile
-
-        coding = None
-
+        #
+        code = ""
+        #
         for i in text:
+            code += mainNode[0].getCode("",i)
             print(i,mainNode[0].getCode("",i))
 
-        print(text)
+        print(text+'\n'+code)
 
     def treeMount(self):
 
@@ -127,11 +128,17 @@ class Node:
             return (self.node_0.getPercent + self.node_1.getPercent)
 
     def getCode(self, pos, char):
+        # Caso aja nos filhos
         if self.node_0 != None:
+            # Retorna o codigo do no filho
             return self.node_0.getCode(pos+"0",char)+self.node_1.getCode(pos+"1",char)
+        # Caso o char seja encontrado
         elif self.value == char:
+            # Retorna a posicao
             return pos
+        # Caso nao encontrado
         else:
+            # Retorna nada
             return ""
 
 class NodeList:
@@ -149,7 +156,7 @@ class NodeList:
                 Node(
                     round(
                         (
-                            (dict[i]*100) / total
+                            ((dict[i]*100) / total) / 100
                         ),
                         3 # Total de casas apos a virgula
                     )
@@ -227,4 +234,5 @@ class TextCount:
         # Retorna um dicionario com os caracteres nos indices e totais
         return self.letters
 
+# ------------------- MAIN -------------------
 Huffman()
