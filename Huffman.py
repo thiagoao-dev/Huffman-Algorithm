@@ -12,40 +12,77 @@ import json
 class Huffman:
 
     node_0 = None
-    nodeIndex_0 = -1
     node_1 = None
+    nodeIndex_0 = -1
     nodeIndex_1 = -1
-    nodeTree = None
 
     def __init__(self):
 
+        lastNode = self.treeMount()
+        self.textCoding(lastNode)
+
+    def textCoding(self, mainNode):
+
+        # Solicita o texto a ser lido
+        text = TxtRead().readFile
+
+        coding = None
+
+        for i in text:
+            print(i,mainNode[0].getCode("",i))
+
+        print(text)
+
+    def treeMount(self):
+
+        # Inicia os nos menores
         self.node_0 = Node(float('inf'))
         self.node_1 = Node(float('inf'))
 
         nodeList = NodeList().getNodeList
 
+        # Enquanto a lista conter mais de um no
         while len(nodeList) > 1:
-            #
+
+            # Cria um lista copia da lista original
             cp = copy.copy(nodeList)
+
+            # Enquanto houve nos na lista copia
             while cp:
-                #
+
+                # Remove o no da ponta
                 node = cp.pop()
-                #
+
+                # Caso o seja o com menor percentual
                 if node.getPercent < self.node_0.percent:
+                    #
                     self.node_1 = self.node_0
                     self.nodeIndex_1 = self.nodeIndex_0
 
+                    #
                     self.node_0 = node
                     self.nodeIndex_0 = len(cp)
+                #
                 elif node.getPercent < self.node_1.percent:
+                    #
                     self.node_1 = node
                     self.nodeIndex_1 = len(cp)
-            #
 
-            # O POP TÁ ERRADO
-            nodeList.pop(self.nodeIndex_0)
-            nodeList.pop(self.nodeIndex_1-1)
+            # --- GAMBIARRA ---
+            for i in nodeList:
+                if i == self.node_0:
+                    nodeList.remove(i)
+                if i == self.node_1:
+                    nodeList.remove(i)
 
+            for i in nodeList:
+                if i == self.node_0:
+                    nodeList.remove(i)
+                if i == self.node_1:
+                    nodeList.remove(i)
+            # --- FIM GAMBIARRA ---
+
+            # Adiciona novo no a lista
             nodeList.append(
                 Node(
                     self.node_0.getPercent +
@@ -54,10 +91,13 @@ class Huffman:
                     self.node_0,self.node_1
                 )
             )
-            #
+
+            # Reinicia os nos menores
             self.node_0 = Node(float('inf'))
             self.node_1 = Node(float('inf'))
-        print(nodeList[0].getPercent)
+
+        #
+        return nodeList
 
 class Node:
 
@@ -86,6 +126,14 @@ class Node:
         else:
             return (self.node_0.getPercent + self.node_1.getPercent)
 
+    def getCode(self, pos, char):
+        if self.node_0 != None:
+            return self.node_0.getCode(pos+"0",char)+self.node_1.getCode(pos+"1",char)
+        elif self.value == char:
+            return pos
+        else:
+            return ""
+
 class NodeList:
 
     nodeList = []
@@ -103,7 +151,7 @@ class NodeList:
                         (
                             (dict[i]*100) / total
                         ),
-                        3 # Total de casas após a virgula
+                        3 # Total de casas apos a virgula
                     )
                 ).setValue(i)
             )
@@ -117,11 +165,11 @@ class TxtRead:
 
     @property
     def readFile(self: object) -> object:
-        # Abre e Lê o arquivo texto.txt
+        # Abre e L? o arquivo texto.txt
         txt_file = open("texto.txt", "rt")
         txt = txt_file.read()
 
-        # Transforma todas as quebras de linhas em espaço simples
+        # Transforma todas as quebras de linhas em espa?o simples
         txt = txt.replace("\n", " ")
 
         #
@@ -161,7 +209,7 @@ class TextCount:
             #
             total += 1
 
-            # Caso o caracter ainda não tenha sido lida
+            # Caso o caracter ainda nao tenha sido lida
             if text[i] not in readed:
 
                 # Add o caracter aos lidos e add ao dicionario
@@ -170,7 +218,7 @@ class TextCount:
             #
             else:
 
-                # Soma 1 ao caracter já adcionado
+                # Soma 1 ao caracter ja adcionado
                 self.letters[text[i]] += 1
 
         #
