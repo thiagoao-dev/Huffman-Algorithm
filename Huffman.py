@@ -1,6 +1,6 @@
 import copy
 
-__author__  = "Thiago Augustus de Oliveira"
+__author__  = "Thiago Augustus de Oliveira e Micael Marigo"
 __license__ = "GPL"
 __version__ = "1.0.0"
 __email__   = "thiagoaugustusdeoliveira@gmail.com"
@@ -18,10 +18,47 @@ class Huffman:
 
     def __init__(self):
 
-        lastNode = self.treeMount()
-        self.textCoding(lastNode)
+        mainNode = self.treeMount()
+        encode   = self.textEncoding(mainNode)
+        self.mountExit(None, encode, 'toJson')
 
-    def textCoding(self, mainNode):
+    def mountExit(self, node = None, code = '', type = 'toJson'):
+        if node != None and code != '':
+            if type == 'toJson':
+
+                # Esqueleto do arquivo de saida
+                exit = {
+                    "tree": {
+                        "nodes": []
+                    },
+                    "string": ""
+                }
+
+                #
+                nodeList = NodeList().getNodeList
+
+                #
+                textCount = TextCount().counterLetter
+
+                #
+                for i in nodeList:
+                    if i.getValue != None:
+                        exit["tree"]["nodes"].append([i.getValue, textCount[i.getValue],i.getPercent])
+
+
+                #
+                exit["string"] = code
+
+                # Escreve no arquivo
+                file = open("JsonExit.txt", "w")
+                file.write(str(exit))
+                file.close()
+
+            #
+            elif type == 'toText':
+                pass
+
+    def textEncoding(self, mainNode):
 
         # Solicita o texto a ser lido
         text = TxtRead().readFile
@@ -30,9 +67,10 @@ class Huffman:
         #
         for i in text:
             code += mainNode[0].getCode("",i)
-            print(i,mainNode[0].getCode("",i))
+            # Imprime o c?digo da letra
+            #print(i,mainNode[0].getCode("",i))
 
-        print(text+'\n'+code)
+        return code
 
     def treeMount(self):
 
@@ -119,6 +157,10 @@ class Node:
             self.node_0 = node_0
             self.node_1 = node_1
         return self
+
+    @property
+    def getValue(self):
+        return self.value
 
     @property
     def getPercent(self):
