@@ -20,43 +20,43 @@ class Huffman:
 
         mainNode = self.treeMount()
         encode   = self.textEncoding(mainNode)
-        self.mountExit(None, encode, 'toJson')
+        self.mountExit(mainNode, encode, 'toJson')
 
     def mountExit(self, node = None, code = '', type = 'toJson'):
-        if node != None and code != '':
-            if type == 'toJson':
+        #
+        if type == 'toJson':
 
-                # Esqueleto do arquivo de saida
-                exit = {
-                    "tree": {
-                        "nodes": []
-                    },
-                    "string": ""
-                }
+            # Esqueleto do arquivo de saida
+            exit = {
+                "tree": {
+                    "nodes": []
+                },
+                "string": ""
+            }
 
-                #
-                nodeList = NodeList().getNodeList
+            # Recupera a lista de nos
+            nodeList = NodeList().getNodeList
 
-                #
-                textCount = TextCount().counterLetter
+            # Recupera a contagem de caracter do texto original
+            textCount = TextCount().counterLetter
 
-                #
-                for i in nodeList:
-                    if i.getValue != None:
-                        exit["tree"]["nodes"].append([i.getValue, textCount[i.getValue],i.getPercent])
+            # Atribui o arquivo codificado a saida
+            exit["string"] = code
 
+            # Atribui os caracteres, quantidade e peso
+            for i in nodeList:
+                # Verifica se o no e valido
+                if i.getValue != None:
+                    exit["tree"]["nodes"].append([i.getValue, textCount[i.getValue], i.getPercent, node[0].getCode("",i.getValue)])
 
-                #
-                exit["string"] = code
+            # Escreve no arquivo
+            file = open("JsonExit.txt", "w")
+            file.write(str(exit))
+            file.close()
 
-                # Escreve no arquivo
-                file = open("JsonExit.txt", "w")
-                file.write(str(exit))
-                file.close()
-
-            #
-            elif type == 'toText':
-                pass
+        #
+        elif type == 'toText':
+            pass
 
     def textEncoding(self, mainNode):
 
