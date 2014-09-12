@@ -22,9 +22,10 @@ class Huffman:
         encode   = self.textEncoding(mainNode)
         self.mountExit(mainNode, encode, 'toJson')
 
-        tree     = JsonRead.readJson()['tree']
-        decode   = JsonRead.readJson()['string']
-        self.mountExit(mainNode, JsonRead.readJson()['string'], 'toText')
+        #tree     = JsonRead.readJson()['tree']
+        #print(tree['nodes'])
+        #decode   = JsonRead.readJson()['string']
+        #self.mountExit(mainNode, JsonRead.readJson()['string'], 'toText')
 
     def mountExit(self, node = None, code = '', type = 'toJson'):
         #
@@ -42,7 +43,7 @@ class Huffman:
             nodeList = NodeList().getNodeList
 
             # Recupera a contagem de caracter do texto original
-            textCount = TextCount().counterLetter
+            textCount = TextCount().counterLetter()
 
             # Atribui o arquivo codificado a saida
             exit["string"] = code
@@ -54,8 +55,8 @@ class Huffman:
                     exit["tree"]["nodes"].append([i.getValue, textCount[i.getValue], i.getPercent, node[0].getCode("",i.getValue)])
 
             # Escreve no arquivo
-            file = open("JsonExit.txt", "w")
-            file.write(str(exit))
+            file = open("JsonExit.json", "w")
+            json.dump(exit, file)
             file.close()
 
         #
@@ -81,6 +82,72 @@ class Huffman:
         return code
 
     def treeTxtMount(self):
+
+        # Inicia os nos menores
+        self.node_0 = Node(float('inf'))
+        self.node_1 = Node(float('inf'))
+
+        nodeList = NodeList().getNodeList
+
+        # Enquanto a lista conter mais de um no
+        while len(nodeList) > 1:
+
+            # Cria um lista copia da lista original
+            cp = copy.copy(nodeList)
+
+            # Enquanto houve nos na lista copia
+            while cp:
+
+                # Remove o no da ponta
+                node = cp.pop()
+
+                # Caso o seja o com menor percentual
+                if node.getPercent < self.node_0.percent:
+                    #
+                    self.node_1 = self.node_0
+                    self.nodeIndex_1 = self.nodeIndex_0
+
+                    #
+                    self.node_0 = node
+                    self.nodeIndex_0 = len(cp)
+                #
+                elif node.getPercent < self.node_1.percent:
+                    #
+                    self.node_1 = node
+                    self.nodeIndex_1 = len(cp)
+
+            # --- GAMBIARRA ---
+            for i in nodeList:
+                if i == self.node_0:
+                    nodeList.remove(i)
+                if i == self.node_1:
+                    nodeList.remove(i)
+
+            for i in nodeList:
+                if i == self.node_0:
+                    nodeList.remove(i)
+                if i == self.node_1:
+                    nodeList.remove(i)
+            # --- FIM GAMBIARRA ---
+
+            # Adiciona novo no a lista
+            nodeList.append(
+                Node(
+                    self.node_0.getPercent +
+                    self.node_1.getPercent
+                ).setNode(
+                    self.node_0,self.node_1
+                )
+            )
+
+            # Reinicia os nos menores
+            self.node_0 = Node(float('inf'))
+            self.node_1 = Node(float('inf'))
+
+        #
+        return nodeList
+
+    def treeJsonMount(self):
 
         # Inicia os nos menores
         self.node_0 = Node(float('inf'))
@@ -197,9 +264,8 @@ class NodeList:
 
     def __init__(self):
 
-        dict = TextCount().counterLetter
+        dict = TextCount().counterLetter()
         total = dict.pop('total')
-
         #
         for i in dict:
             self.nodeList.append(
@@ -218,6 +284,49 @@ class NodeList:
         #
         return self.nodeList
 
+class TextCount:
+
+    letters = {}
+
+    def counterLetter(self: object, type = 'txt') -> object:
+
+        if type == 'txt':
+            # Solicita o texto a ser lido
+            text = TxtRead().readFile
+
+            readed = []
+            total  = 0
+
+            # Varre todo o texto, caracter por caracter
+            for i in range(len(text)):
+
+                #
+                total += 1
+
+                # Caso o caracter ainda nao tenha sido lida
+                if text[i] not in readed:
+
+                    # Add o caracter aos lidos e add ao dicionario
+                    readed.append(text[i])
+                    self.letters[text[i]] = 1
+                #
+                else:
+
+                    # Soma 1 ao caracter ja adcionado
+                    self.letters[text[i]] += 1
+
+            #
+            self.letters['total'] = total
+
+        textJ = JsonRead().readJson
+        print(textJ['tree']['nodes'])
+        textE = []
+
+
+        print(self.letters)
+        # Retorna um dicionario com os caracteres nos indices e totais
+        return self.letters
+
 class TxtRead:
 
     @property
@@ -235,8 +344,8 @@ class TxtRead:
 class JsonRead:
 
     # Read Json Method
-    @staticmethod
-    def readJson() -> object:
+    @property
+    def readJson(self: object) -> object:
         """
         Return a dictionary
         :rtype : object
@@ -246,43 +355,6 @@ class JsonRead:
             # Test the object
             assert isinstance(json_file, object)
             return json_file
-
-class TextCount:
-
-    letters = {}
-
-    @property
-    def counterLetter(self: object) -> object:
-
-        # Solicita o texto a ser lido
-        text = TxtRead().readFile
-
-        readed = []
-        total  = 0
-
-        # Varre todo o texto, caracter por caracter
-        for i in range(len(text)):
-
-            #
-            total += 1
-
-            # Caso o caracter ainda nao tenha sido lida
-            if text[i] not in readed:
-
-                # Add o caracter aos lidos e add ao dicionario
-                readed.append(text[i])
-                self.letters[text[i]] = 1
-            #
-            else:
-
-                # Soma 1 ao caracter ja adcionado
-                self.letters[text[i]] += 1
-
-        #
-        self.letters['total'] = total
-
-        # Retorna um dicionario com os caracteres nos indices e totais
-        return self.letters
 
 # ------------------- MAIN -------------------
 Huffman()
