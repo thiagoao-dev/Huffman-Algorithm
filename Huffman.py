@@ -18,9 +18,13 @@ class Huffman:
 
     def __init__(self):
 
-        mainNode = self.treeMount()
+        mainNode = self.treeTxtMount()
         encode   = self.textEncoding(mainNode)
         self.mountExit(mainNode, encode, 'toJson')
+
+        tree     = JsonRead.readJson()['tree']
+        decode   = JsonRead.readJson()['string']
+        self.mountExit(mainNode, JsonRead.readJson()['string'], 'toText')
 
     def mountExit(self, node = None, code = '', type = 'toJson'):
         #
@@ -56,7 +60,11 @@ class Huffman:
 
         #
         elif type == 'toText':
-            pass
+
+            # Escreve no arquivo
+            file = open("TxtExit.txt", "w")
+            #file.write(str(exit))
+            file.close()
 
     def textEncoding(self, mainNode):
 
@@ -72,7 +80,7 @@ class Huffman:
 
         return code
 
-    def treeMount(self):
+    def treeTxtMount(self):
 
         # Inicia os nos menores
         self.node_0 = Node(float('inf'))
@@ -233,7 +241,7 @@ class JsonRead:
         Return a dictionary
         :rtype : object
         """
-        with open("grafod.json") as json_file:
+        with open("texto-descomp.json") as json_file:
             json_file = json.load(json_file)
             # Test the object
             assert isinstance(json_file, object)
