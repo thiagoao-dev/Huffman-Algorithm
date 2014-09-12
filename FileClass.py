@@ -67,6 +67,3 @@ class FileClass:
             )
             #
             return list
-
-print(FileClass.getChars("texto.txt"))
-print(FileClass.getChars("texto-descomp.json"))
