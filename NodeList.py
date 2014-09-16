@@ -1,6 +1,5 @@
 from Node import Node
 
-
 class NodeList:
 
     nodeList = []
