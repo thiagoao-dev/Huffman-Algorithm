@@ -1,9 +1,10 @@
 class Node:
 
     value   = None
+    percent = None
+    count   = 0
     node_0  = None
     node_1  = None
-    percent = None
 
     def __init__(self, p):
         self.percent = p
@@ -16,6 +17,10 @@ class Node:
         if self.node_0 == None and self.node_1 == None:
             self.node_0 = node_0
             self.node_1 = node_1
+        return self
+
+    def setCount(self, t):
+        self.count = t
         return self
 
     @property

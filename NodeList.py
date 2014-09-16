@@ -1,4 +1,3 @@
-import FileClass
 from Node import Node
 
 
@@ -6,24 +5,12 @@ class NodeList:
 
     nodeList = []
 
-    def __init__(self):
+    @staticmethod
+    def getNodeList(chars):
 
-        dict = FileClass.getChars()
-        total = dict.pop('total')
-        #
-        for i in dict:
-            self.nodeList.append(
-                Node(
-                    round(
-                        (
-                            ((dict[i]*100) / total) / 100
-                        ),
-                        3 # Total de casas apos a virgula
-                    )
-                ).setValue(i)
-            )
+        for i in chars:
 
-    @property
-    def getNodeList(self):
-        #
-        return self.nodeList
+            node = Node(i[2]).setValue(i[0]).setCount(i[1])
+            NodeList.nodeList.append(node)
+
+        return NodeList.nodeList
