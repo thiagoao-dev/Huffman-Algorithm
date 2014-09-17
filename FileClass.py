@@ -32,7 +32,7 @@ class FileClass:
                 key=lambda chars: chars[2], reverse=True
             )
             #
-            return list
+            return list, FileClass.readJson(filePath)['string']
         #
         elif filePath.find(".txt") >= 0:
 

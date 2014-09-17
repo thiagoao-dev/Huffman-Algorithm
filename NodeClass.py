@@ -34,6 +34,10 @@ class Node:
         else:
             return (self.node_0.getPercent + self.node_1.getPercent)
 
+    @property
+    def getCount(self):
+        return self.count
+
     def getCode(self, pos, char):
         # Caso aja nos filhos
         if self.node_0 != None:
@@ -48,6 +52,12 @@ class Node:
             # Retorna nada
             return ""
 
-    @property
-    def getCount(self):
-        return self.count
+    def getLetter(self, code):
+
+        if self.getValue != None:
+            return self.getValue, code
+        else:
+            if code[0] == 0:
+                self.node_0.getLetter(code[1:])
+            else:
+                self.node_1.getLetter(code[1:])
