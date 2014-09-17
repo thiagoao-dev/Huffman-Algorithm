@@ -53,11 +53,10 @@ class Node:
             return ""
 
     def getLetter(self, code):
-
         if self.getValue != None:
             return self.getValue, code
         else:
-            if code[0] == 0:
-                self.node_0.getLetter(code[1:])
+            if code[0] == '0':
+                return self.node_0.getLetter(code[1:])
             else:
-                self.node_1.getLetter(code[1:])
+                return self.node_1.getLetter(code[1:])

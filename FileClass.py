@@ -93,3 +93,10 @@ class FileClass:
         file = open("JsonExit.json", "w")
         json.dump(exit, file)
         file.close()
+
+    @staticmethod
+    def textExit(text):
+        # Escreve no arquivo
+        file = open("TextExit.txt", "w")
+        file.write(text)
+        file.close()

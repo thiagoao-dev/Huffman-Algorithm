@@ -11,11 +11,13 @@ class Huffman:
         nodeList = NodeList.getNodeList(chars)
         treeNode = TreeNode.mount(nodeList)
         FileClass.jsonExit(treeNode,nodeList,self.encodeTxt(treeNode))
+
         # Decodificar
         chars, code = FileClass.getChars("JsonExit.json")
-        nodeList   = NodeList.getNodeList(chars)
+        nodeList    = NodeList.getNodeList(chars)
         treeNode2   = TreeNode.mount(nodeList)
-        print(self.decodeTxt(code,treeNode2))
+        text        = self.decodeTxt(code,treeNode2)
+        FileClass.textExit(text)
 
     def encodeTxt(self,treeNode):
         # Solicita o texto a ser lido
@@ -32,7 +34,7 @@ class Huffman:
     def decodeTxt(self,code,treeNode):
 
         text = ""
-        while code != None:
+        while len(code) > 0:
             char, code = treeNode[0].getLetter(code)
             text += char
         return text
