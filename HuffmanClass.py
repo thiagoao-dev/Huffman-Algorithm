@@ -1,5 +1,4 @@
 from FileClass import FileClass
-from FileClass import FileClass
 from NodeListClass import NodeList
 from TreeNodeClass import TreeNode
 
@@ -11,8 +10,7 @@ class Huffman:
         chars    = FileClass.getChars("texto.txt")
         nodeList = NodeList.getNodeList(chars)
         treeNode = TreeNode.mount(nodeList)
-        print(self.encodeTxt(treeNode))
-        print(treeNode,nodeList)
+        FileClass.jsonExit(treeNode,nodeList,self.encodeTxt(treeNode))
 
     def encodeTxt(self,treeNode):
         # Solicita o texto a ser lido
@@ -22,6 +20,6 @@ class Huffman:
         #
         for i in text:
             code += treeNode[0].getCode("",i)
-            # Imprime o c?digo da letra
+            # Imprime o codigo da letra
             #print(i,mainNode[0].getCode("",i))
         return code

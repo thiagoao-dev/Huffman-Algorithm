@@ -47,3 +47,7 @@ class Node:
         else:
             # Retorna nada
             return ""
+
+    @property
+    def getCount(self):
+        return self.count

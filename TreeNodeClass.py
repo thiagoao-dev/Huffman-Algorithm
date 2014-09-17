@@ -12,15 +12,17 @@ class TreeNode:
 
     @staticmethod
     def mount(nodeList):
-        
+
+        nodeListTemp = copy.deepcopy(nodeList)
+
         # Inicia os nos menores
         TreeNode.node_0 = Node(float('inf'))
         TreeNode.node_1 = Node(float('inf'))
 
         # Enquanto a lista conter mais de um no
-        while len(nodeList) > 1:
+        while len(nodeListTemp) > 1:
             # Cria um lista copia da lista original
-            cp = copy.copy(nodeList)
+            cp = copy.copy(nodeListTemp)
 
             # Enquanto houve nos na lista copia
             while cp:
@@ -44,21 +46,21 @@ class TreeNode:
                     TreeNode.nodeIndex_1 = len(cp)
 
             # --- GAMBIARRA ---
-            for i in nodeList:
+            for i in nodeListTemp:
                 if i == TreeNode.node_0:
-                    nodeList.remove(i)
+                    nodeListTemp.remove(i)
                 if i == TreeNode.node_1:
-                    nodeList.remove(i)
+                    nodeListTemp.remove(i)
 
-            for i in nodeList:
+            for i in nodeListTemp:
                 if i == TreeNode.node_0:
-                    nodeList.remove(i)
+                    nodeListTemp.remove(i)
                 if i == TreeNode.node_1:
-                    nodeList.remove(i)
+                    nodeListTemp.remove(i)
             # --- FIM GAMBIARRA ---
 
             # Adiciona novo no a lista
-            nodeList.append(
+            nodeListTemp.append(
                 Node(
                     TreeNode.node_0.getPercent +
                     TreeNode.node_1.getPercent
@@ -71,4 +73,4 @@ class TreeNode:
             TreeNode.node_0 = Node(float('inf'))
             TreeNode.node_1 = Node(float('inf'))
 
-        return nodeList
+        return nodeListTemp
