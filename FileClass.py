@@ -1,4 +1,5 @@
 import json
+from NodeListClass import NodeList
 
 class FileClass:
 
@@ -67,3 +68,28 @@ class FileClass:
             )
             #
             return list
+
+    def jsonExit(self, treeNode, nodeList):
+
+        # Esqueleto do arquivo de saida
+        exit = {
+            "tree": {
+                "nodes": []
+            },
+            "string": ""
+        }
+
+        # Atribui o arquivo codificado a saida
+        exit["string"] = code
+
+        # Atribui os caracteres, quantidade e peso
+        for i in nodeList:
+            # Verifica se o no e valido
+            if i.getValue != None:
+                exit["tree"]["nodes"].append([i.getValue, textCount[i.getValue], i.getPercent, node[0].getCode("",i.getValue)])
+
+        # Escreve no arquivo
+        file = open("JsonExit.json", "w")
+        json.dump(exit, file)
+        file.close()
+        pass

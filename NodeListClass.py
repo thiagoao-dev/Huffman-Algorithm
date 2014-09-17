@@ -1,4 +1,4 @@
-from Node import Node
+from NodeClass import Node
 
 class NodeList:
 

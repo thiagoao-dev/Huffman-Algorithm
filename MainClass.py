@@ -1,5 +1,6 @@
 from FileClass import FileClass
-from NodeList import NodeList
+from NodeListClass import NodeList
+from TreeNodeClass import TreeNode
 
 __author__  = "Thiago Augustus e Micael Marigo"
 __license__ = "GPL"
@@ -14,6 +15,8 @@ class Main:
         # Leitura dos arquivos
         chars    = FileClass.getChars("texto.txt")
         nodeList = NodeList.getNodeList(chars)
+        treeNode = TreeNode.mount(nodeList)
+        print(treeNode,nodeList)
         pass
 
 Main()
