@@ -6,13 +6,13 @@ class Huffman:
 
     def __init__(self):
 
-        # Codificar
+        # Codifica
         chars    = FileClass.getChars("texto.txt")
         nodeList = NodeList.getNodeList(chars)
         treeNode = TreeNode.mount(nodeList)
         FileClass.jsonExit(treeNode,nodeList,self.encodeTxt(treeNode))
 
-        # Decodificar
+        # Decodifica
         chars, code = FileClass.getChars("JsonExit.json")
         nodeList    = NodeList.getNodeList(chars)
         treeNode2   = TreeNode.mount(nodeList)
@@ -32,9 +32,12 @@ class Huffman:
         return code
 
     def decodeTxt(self,code,treeNode):
-
+        #
         text = ""
+        # Enquanto o tamanho remanescente do codigo for maior que zero
         while len(code) > 0:
+            # Resgata a letra a partir do no raiz e codigo remanescente
             char, code = treeNode[0].getLetter(code)
+            # Monta o texto
             text += char
         return text

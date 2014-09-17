@@ -6,10 +6,5 @@ __version__ = "2.0.0"
 __email__   = "thiagoaugustusdeoliveira@gmail.com"
 __status__  = "Production"
 
-class Main:
-
-    def __init__(self):
-
-        Huffman()
-
-Main()
+# Invoca o algoritmo
+Huffman()

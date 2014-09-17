@@ -53,9 +53,11 @@ class Node:
             return ""
 
     def getLetter(self, code):
+        # Caso encontre um no com valor
         if self.getValue != None:
             return self.getValue, code
         else:
+            #
             if code[0] == '0':
                 return self.node_0.getLetter(code[1:])
             else:
